@@ -17,7 +17,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         wget \
         curl \
         lsb-release \
-        vim
+        vim \
+        tmux
 
 RUN apt update && apt -y install locales && \
         locale-gen en_US en_US.UTF-8 && \
@@ -25,20 +26,24 @@ RUN apt update && apt -y install locales && \
 
 ENV LANG=en_US.UTF-8
 
+ENV ROS_DISTRO galactic
+ENV SHELL /bin/bash
+
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key  -o /usr/share/keyrings/ros-archive-keyring.gpg && \
         curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add - && \
         echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null && \
         apt update && \
-        apt install -y ros-galactic-desktop && \
-        /bin/bash -c "source /opt/ros/galactic/setup.bash"
+        apt install -y ros-$ROS_DISTRO-desktop && \
+        /bin/bash -c "source /opt/ros/$ROS_DISTRO/setup.bash"
 
 RUN apt install -y \
-        ros-galactic-gazebo-ros-pkgs \
-        ros-galactic-xacro \
-        ros-galactic-joint-state-publisher-gui \
-        ros-galactic-navigation2
-        # ros-galactic-nav2-bringup
-        # '~ros-galactic-turtlebot3-.*'
+        ros-$ROS_DISTRO-gazebo-ros-pkgs \
+        ros-$ROS_DISTRO-xacro \
+        ros-$ROS_DISTRO-joint-state-publisher-gui \
+        ros-$ROS_DISTRO-navigation2 \
+        ros-$ROS_DISTRO-nav2-bringup \
+        ros-$ROS_DISTRO-robot-localization \
+        ros-$ROS_DISTRO-slam-toolbox
 
 RUN apt-key adv --fetch-keys 'http://packages.osrfoundation.org/gazebo.key' && \
         apt update && \
@@ -58,8 +63,7 @@ RUN useradd --create-home ros && \
         sh -c 'echo "ros ALL=(root) NOPASSWD:ALL" >> /etc/sudoers'
 
 COPY ./ros_entrypoint.sh /
-
-ENV ROS_DISTRO galactic
+COPY ./.tmux.conf /home/ros/
 
 RUN sh -c 'echo "source /ros_entrypoint.sh" >> /home/ros/.bashrc'
 
