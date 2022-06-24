@@ -1,11 +1,12 @@
 // See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
-	"image": "ros2:gpu",
+	"image": "mechai:ws",
 	"remoteUser": "ros",
 	"runArgs": [
 		"--privileged",
 		"--network=host",
 		"--runtime=nvidia",
+		"--volume=/home/jing/.ssh:/home/ros/.ssh",
 		"--volume=/tmp/.X11-unix:/tmp/.X11-unix"
 	],
 	"containerEnv": { "DISPLAY": "${localEnv:DISPLAY}" },

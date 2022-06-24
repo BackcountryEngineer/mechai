@@ -45,7 +45,7 @@ RUN apt install -y \
         ros-$ROS_DISTRO-robot-localization \
         ros-$ROS_DISTRO-slam-toolbox \
         ros-$ROS_DISTRO-ros2-control \
-        ros-$ROS_DISTRO-ros2-controller
+        ros-$ROS_DISTRO-ros2-controllers
 
 RUN apt-key adv --fetch-keys 'http://packages.osrfoundation.org/gazebo.key' && \
         apt update && \
@@ -63,7 +63,7 @@ RUN pip3 install -U \
         pytest \
         setuptools \
         colcon-ros-bundle \
-        python3-colcon-parallel-executor
+	colcon-common-extensions
 
 RUN useradd --create-home ros && \
         sh -c 'echo "ros ALL=(root) NOPASSWD:ALL" >> /etc/sudoers'
