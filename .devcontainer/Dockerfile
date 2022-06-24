@@ -43,7 +43,9 @@ RUN apt install -y \
         ros-$ROS_DISTRO-navigation2 \
         ros-$ROS_DISTRO-nav2-bringup \
         ros-$ROS_DISTRO-robot-localization \
-        ros-$ROS_DISTRO-slam-toolbox
+        ros-$ROS_DISTRO-slam-toolbox \
+        ros-$ROS_DISTRO-ros2-control \
+        ros-$ROS_DISTRO-ros2-controller
 
 RUN apt-key adv --fetch-keys 'http://packages.osrfoundation.org/gazebo.key' && \
         apt update && \
@@ -57,7 +59,11 @@ RUN rosdep update
 
 RUN apt-get install -y python3-apt python3-pip python3-vcstool python3-testresources
 
-RUN pip3 install -U pytest setuptools colcon-ros-bundle
+RUN pip3 install -U \
+        pytest \
+        setuptools \
+        colcon-ros-bundle \
+        python3-colcon-parallel-executor
 
 RUN useradd --create-home ros && \
         sh -c 'echo "ros ALL=(root) NOPASSWD:ALL" >> /etc/sudoers'
