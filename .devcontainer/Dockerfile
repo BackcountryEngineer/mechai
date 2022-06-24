@@ -73,5 +73,7 @@ COPY ./.tmux.conf /home/ros/
 
 RUN sh -c 'echo "source /ros_entrypoint.sh" >> /home/ros/.bashrc'
 
+ENV TERM xterm-256color
+
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
