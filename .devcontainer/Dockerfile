@@ -51,22 +51,24 @@ RUN apt-key adv --fetch-keys 'http://packages.osrfoundation.org/gazebo.key' && \
         apt update && \
         apt install -y python3-rosdep git
 
+RUN apt-get install -y python3-apt python3-pip python3-vcstool python3-testresources
+
+RUN useradd --create-home ros && \
+        sh -c 'echo "ros ALL=(root) NOPASSWD:ALL" >> /etc/sudoers'
+
 RUN if [ ! -f "/etc/ros/rosdep/sources.list.d/20-default.list" ]; then \
         rosdep init; \
     fi
 
-RUN rosdep update
+USER ros
 
-RUN apt-get install -y python3-apt python3-pip python3-vcstool python3-testresources
+RUN rosdep update
 
 RUN pip3 install -U \
         pytest \
         setuptools \
         colcon-ros-bundle \
 	colcon-common-extensions
-
-RUN useradd --create-home ros && \
-        sh -c 'echo "ros ALL=(root) NOPASSWD:ALL" >> /etc/sudoers'
 
 COPY ./ros_entrypoint.sh /
 COPY ./.tmux.conf /home/ros/
