@@ -7,7 +7,15 @@
         "*.repos": "yaml",
         "*.world": "xml",
         "*.xacro": "xml",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "*.txx": "cpp",
+        "any": "cpp",
+        "bitset": "cpp",
+        "memory": "cpp",
+        "random": "cpp",
+        "future": "cpp",
+        "optional": "cpp",
+        "type_traits": "cpp"
     },
     "python.analysis.extraPaths": [
         "/opt/ros/galactic/lib/python3.8/site-packages/"
